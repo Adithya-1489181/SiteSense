@@ -1,7 +1,6 @@
 {
   "name": "@sitesense/performance",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +8,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "private": true
+  "type": "module",
+  "private": true,
+  "description": "",
+  "devDependencies": {
+    "@axe-core/puppeteer": "^4.10.2",
+    "@types/node": "^24.6.2",
+    "axe-core": "^4.10.3",
+    "lighthouse": "^12.8.2",
+    "puppeteer": "^24.23.0",
+    "typescript": "^5.9.3"
+  }
 }
