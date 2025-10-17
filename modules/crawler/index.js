@@ -4,50 +4,41 @@
  * Project: SiteSense Web Auditor - Crawler Component
  * Purpose: Implements a Breadth-First Search (BFS) to crawl a website and discover
  * internal, canonical HTML endpoints.
- * Output: Returns a structured JavaScript Object (JSON-ready) containing the list of URLs.
+ * Output: Writes the resulting JSON object to a file named crawled.json.
  */
 
 // --- Dependencies ---
 const axios = require('axios');
 const cheerio = require('cheerio');
 const { URL } = require('url');
+const fs = require('fs').promises; // Re-import fs for file writing
 
 // --- Configuration Constants ---
 const MAX_CRAWL_DEPTH = 2; 
 const MAX_PAGES_TO_VISIT = 50; 
 const REQUEST_TIMEOUT_MS = 5000;
+const OUTPUT_FILE_PATH = 'crawledFile.json'; // The fixed file path for the output
 
 /**
  * Helper Function: Normalizes and Validates URLs
  * Ensures the URL is absolute, on the same domain, and removes query parameters/anchors.
- * @param {string} href The raw link found on the page.
- * @param {string} baseUrl The base URL of the site being crawled.
- * @returns {string | null} The normalized URL or null if it's invalid/external/static.
+ * (Logic remains unchanged)
  */
 function normalizeAndValidateUrl(href, baseUrl) {
     try {
-        // 1. Resolve to Absolute URL
         const resolvedUrl = new URL(href, baseUrl);
-
-        // 2. Scope Check: Must be on the same host domain
         const baseHost = new URL(baseUrl).host;
         if (resolvedUrl.host !== baseHost) {
-            return null; // Ignore external links
+            return null;
         }
-
-        // 3. Clean up: Remove search query parameters and hash anchors for canonical endpoint
         resolvedUrl.search = '';
         resolvedUrl.hash = '';
-
-        // 4. Filter Static Assets: Only care about HTML endpoints.
         const path = resolvedUrl.pathname.toLowerCase();
         if (path.match(/\.(pdf|zip|png|jpg|gif|css|js|xml)$/)) {
             return null;
         }
-
         return resolvedUrl.href;
     } catch (e) {
-        // Silent failure for unparseable URLs
         return null;
     }
 }
@@ -55,10 +46,9 @@ function normalizeAndValidateUrl(href, baseUrl) {
 
 /**
  * Core Crawler Function: Discovers all endpoints on a website.
- * Implements a Breadth-First Search (BFS) for systematic exploration.
  * @param {string} startUrl The entry point for the crawl.
  * @param {number} [maxDepth=MAX_CRAWL_DEPTH] The maximum recursion depth.
- * @returns {Promise<Object>} A promise that resolves to the final JSON output object (ready to be written to MongoDB/used by the SEO module).
+ * @returns {Promise<Object>} A promise that resolves to the final JSON output object.
  */
 async function crawlWebsite(startUrl, maxDepth = MAX_CRAWL_DEPTH) {
     const initialUrl = normalizeAndValidateUrl(startUrl, startUrl);
@@ -66,59 +56,40 @@ async function crawlWebsite(startUrl, maxDepth = MAX_CRAWL_DEPTH) {
         throw new Error("Invalid or unparseable starting URL provided.");
     }
     
-    // State for BFS
+    // State for BFS (unchanged)
     const visitedUrls = new Set();
     const urlsQueue = [{ url: initialUrl, depth: 0 }];
     const discoveredEndpoints = new Set();
-
-    // Start tracking
     visitedUrls.add(initialUrl);
     discoveredEndpoints.add(initialUrl);
 
-    // Main BFS Loop
+    // Main BFS Loop (unchanged)
     while (urlsQueue.length > 0 && visitedUrls.size <= MAX_PAGES_TO_VISIT) {
         const { url: currentUrl, depth: currentDepth } = urlsQueue.shift();
-
-        // Exit Condition Check
         if (currentDepth >= maxDepth) {
-            continue; // Stop crawling deeper
+            continue;
         }
 
-        // Fetch the Page
         try {
-            // NOTE: Using the initial URL as the hostname check assumes the startUrl is correct.
             const response = await axios.get(currentUrl, { timeout: REQUEST_TIMEOUT_MS });
-            
-            // Only process HTML content
-            const contentType = response.headers['content-type'];
-            if (!contentType || !contentType.includes('text/html')) {
+            if (!response.headers['content-type'] || !response.headers['content-type'].includes('text/html')) {
                 continue;
             }
 
-            // Parse and Extract Links
             const $ = cheerio.load(response.data);
-            
             $('a').each((i, element) => {
                 const rawHref = $(element).attr('href');
                 if (!rawHref) return;
-
                 const nextUrl = normalizeAndValidateUrl(rawHref, currentUrl);
 
-                // Add unique, valid links to the queue
                 if (nextUrl && !visitedUrls.has(nextUrl)) {
                     visitedUrls.add(nextUrl);
                     discoveredEndpoints.add(nextUrl);
-                    
-                    urlsQueue.push({ 
-                        url: nextUrl, 
-                        depth: currentDepth + 1 
-                    });
+                    urlsQueue.push({ url: nextUrl, depth: currentDepth + 1 });
                 }
             });
-
         } catch (error) {
-            // Suppress verbose network errors in the module's core logic. 
-            // The calling module (SEO) will handle fatal errors.
+            // Suppress verbose network errors.
         }
     }
     
@@ -137,12 +108,65 @@ async function crawlWebsite(startUrl, maxDepth = MAX_CRAWL_DEPTH) {
         }
     };
     
-    // Returns the JavaScript Object directly for programmatic consumption
+    // ----------------------------------------------------
+    //  NEW LOGIC: Write JSON Object to File
+    // ----------------------------------------------------
+    try {
+        const jsonString = JSON.stringify(jsonOutput, null, 2);
+        // fs.writeFile is asynchronous and uses the fixed path
+        await fs.writeFile(OUTPUT_FILE_PATH, jsonString, 'utf8');
+        console.log(`\n✅ Successfully wrote crawl results to: ${OUTPUT_FILE_PATH}`);
+    } catch (fileError) {
+        console.error(`\n🛑 CRITICAL FILE WRITE ERROR: Could not write results to file. ${fileError.message}`);
+    }
+    // ----------------------------------------------------
+    
+    // Returns the JavaScript Object for programmatic consumption (SEO/Dashboard)
     return jsonOutput;
 }
 
 
-// --- Module Export (CRITICAL: Makes crawlWebsite callable by SEO Module) ---
+// --- Module Export (CRITICAL: Makes crawlWebsite callable by other modules) ---
 module.exports = {
     crawlWebsite
 };
+
+
+/**
+ * CLI Execution Harness (For direct testing/local CLI)
+ */
+async function main() {
+    // Takes the URL as the first command-line argument.
+    const userUrl = process.argv[2]; 
+    
+    if (!userUrl) {
+        console.error('\n🚫 Error: Please provide a starting URL to crawl.');
+        console.log('Usage: node index.js <YOUR_URL_HERE>');
+        return;
+    }
+
+    try {
+        console.log('\n======================================================');
+        console.log(`         Crawler Service Starting for: ${userUrl}`);
+        console.log('======================================================');
+        
+        // The crawlWebsite function now writes the file itself.
+        const resultObject = await crawlWebsite(userUrl, MAX_CRAWL_DEPTH);
+        
+        console.log('\n======================================================');
+        console.log('         ✅ Crawl Complete. Endpoints JSON:');
+        console.log('======================================================');
+        
+        // Output the result as a formatted JSON string to the terminal
+        console.log(JSON.stringify(resultObject, null, 2));
+
+    } catch (error) {
+        console.error(`\n🛑 CRITICAL FAILURE: The crawling process could not start. ${error.message}`);
+        process.exit(1);
+    }
+}
+
+// Execute CLI harness only if run directly
+if (require.main === module) {
+    main();
+}
