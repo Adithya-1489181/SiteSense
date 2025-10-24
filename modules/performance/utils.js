@@ -79,8 +79,8 @@ export function validateInput(input) {
     throw new Error('At least one endpoint is required');
   }
 
-  if (input.endpoints.length > 50) {
-    throw new Error('Maximum 50 endpoints allowed per audit');
+  if (input.endpoints.length > 100) {
+    throw new Error('Maximum 100 endpoints allowed per audit');
   }
 
   for (const endpoint of input.endpoints) {
@@ -205,4 +205,158 @@ export function deepMerge(target, source) {
 
 function isObject(item) {
   return item && typeof item === 'object' && !Array.isArray(item);
+}
+
+/**
+ * Aggregate results from multiple batch audits
+ * @param {Array} batchResults - Array of audit results from different batches
+ * @returns {Object} Aggregated audit results
+ */
+export function aggregateResults(batchResults) {
+  if (!batchResults || batchResults.length === 0) {
+    throw new Error('No batch results to aggregate');
+  }
+
+  // If only one batch, return it directly
+  if (batchResults.length === 1) {
+    return batchResults[0];
+  }
+
+  console.log(`Aggregating ${batchResults.length} batch results...`);
+
+  // Initialize aggregated structure
+  const aggregated = {
+    summary: {
+      totalPages: 0,
+      overallPerformanceScore: 0,
+      overallSeoScore: 0,
+      performanceGrade: '',
+      seoGrade: '',
+      timestamp: new Date().toISOString()
+    },
+    pageResults: [],
+    issues: {
+      performance: [],
+      seo: []
+    },
+    detailedPageIssues: []
+  };
+
+  // Track unique issues to avoid duplicates
+  const seenPerformanceIssues = new Set();
+  const seenSeoIssues = new Set();
+
+  let totalPerformanceScore = 0;
+  let totalSeoScore = 0;
+  let pageCount = 0;
+
+  // Aggregate data from all batches
+  batchResults.forEach((batch, index) => {
+    console.log(`Processing batch ${index + 1}: ${batch.summary?.totalPages || 0} pages`);
+
+    // Aggregate page results
+    if (batch.pageResults && Array.isArray(batch.pageResults)) {
+      aggregated.pageResults.push(...batch.pageResults);
+      pageCount += batch.pageResults.length;
+
+      // Sum up scores for averaging
+      batch.pageResults.forEach(page => {
+        if (typeof page.performanceScore === 'number') totalPerformanceScore += page.performanceScore;
+        if (typeof page.seoScore === 'number') totalSeoScore += page.seoScore;
+      });
+    }
+
+    // Aggregate detailed page issues
+    if (batch.detailedPageIssues && Array.isArray(batch.detailedPageIssues)) {
+      aggregated.detailedPageIssues.push(...batch.detailedPageIssues);
+    }
+
+    // Aggregate unique performance issues
+    if (batch.issues?.performance && Array.isArray(batch.issues.performance)) {
+      batch.issues.performance.forEach(issue => {
+        const issueKey = issue.id || issue.title;
+        if (!seenPerformanceIssues.has(issueKey)) {
+          seenPerformanceIssues.add(issueKey);
+          aggregated.issues.performance.push({
+            ...issue,
+            affectedPages: [...(issue.affectedPages || [])]
+          });
+        } else {
+          // Merge affected pages for existing issues
+          const existingIssue = aggregated.issues.performance.find(
+            existing => (existing.id || existing.title) === issueKey
+          );
+          if (existingIssue && issue.affectedPages && Array.isArray(issue.affectedPages)) {
+            const newPages = issue.affectedPages.filter(
+              page => !existingIssue.affectedPages.some(existing => 
+                (existing.url || existing) === (page.url || page)
+              )
+            );
+            existingIssue.affectedPages.push(...newPages);
+          }
+        }
+      });
+    }
+
+    // Aggregate unique SEO issues
+    if (batch.issues?.seo && Array.isArray(batch.issues.seo)) {
+      batch.issues.seo.forEach(issue => {
+        const issueKey = issue.id || issue.title;
+        if (!seenSeoIssues.has(issueKey)) {
+          seenSeoIssues.add(issueKey);
+          aggregated.issues.seo.push({
+            ...issue,
+            affectedPages: [...(issue.affectedPages || [])]
+          });
+        } else {
+          // Merge affected pages for existing issues
+          const existingIssue = aggregated.issues.seo.find(
+            existing => (existing.id || existing.title) === issueKey
+          );
+          if (existingIssue && issue.affectedPages && Array.isArray(issue.affectedPages)) {
+            const newPages = issue.affectedPages.filter(
+              page => !existingIssue.affectedPages.some(existing => 
+                (existing.url || existing) === (page.url || page)
+              )
+            );
+            existingIssue.affectedPages.push(...newPages);
+          }
+        }
+      });
+    }
+  });
+
+  // Set final page count
+  aggregated.summary.totalPages = pageCount;
+
+  // Calculate averages
+  if (pageCount > 0) {
+    aggregated.summary.overallPerformanceScore = Math.round(totalPerformanceScore / pageCount);
+    aggregated.summary.overallSeoScore = Math.round(totalSeoScore / pageCount);
+  }
+
+  // Calculate grades
+  aggregated.summary.performanceGrade = getGrade(aggregated.summary.overallPerformanceScore);
+  aggregated.summary.seoGrade = getGrade(aggregated.summary.overallSeoScore);
+
+  // Sort issues by impact (highest first)
+  const impactOrder = { 'High': 3, 'Medium': 2, 'Low': 1 };
+  aggregated.issues.performance.sort((a, b) => (impactOrder[b.impact] || 0) - (impactOrder[a.impact] || 0));
+  aggregated.issues.seo.sort((a, b) => (impactOrder[b.impact] || 0) - (impactOrder[a.impact] || 0));
+
+  console.log(`✓ Aggregation complete: ${pageCount} total pages, ${aggregated.issues.performance.length} performance issues, ${aggregated.issues.seo.length} SEO issues`);
+
+  return aggregated;
+}
+
+/**
+ * Convert score to letter grade
+ */
+function getGrade(score) {
+  if (score >= 90) return 'A+';
+  if (score >= 80) return 'A';
+  if (score >= 70) return 'B';
+  if (score >= 60) return 'C';
+  if (score >= 50) return 'D';
+  return 'F';
 }

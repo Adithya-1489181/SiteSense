@@ -75,61 +75,91 @@ async function auditSinglePage(url, chrome) {
     output: 'json',
     onlyCategories: ['performance', 'seo'],
     port: chrome.port,
-  };
-
-  const runnerResult = await lighthouse(url, options);
-  const lhr = runnerResult.lhr;
-
-  const performanceScore = lhr.categories.performance.score * 100;
-  const seoScore = lhr.categories.seo.score * 100;
-
-  const performanceIssues = extractIssues(
-    lhr.audits,
-    'performance',
-    url
-  ).filter(issue => {
-    const perfAuditRefs = lhr.categories.performance.auditRefs.map(ref => ref.id);
-    return perfAuditRefs.includes(issue.id);
-  });
-
-  const seoIssues = extractIssues(
-    lhr.audits,
-    'seo',
-    url
-  ).filter(issue => {
-    const seoAuditRefs = lhr.categories.seo.auditRefs.map(ref => ref.id);
-    return seoAuditRefs.includes(issue.id);
-  });
-
-  return {
-    url,
-    performanceScore,
-    seoScore,
-    performanceIssues,
-    seoIssues,
-    metrics: {
-      firstContentfulPaint: lhr.audits['first-contentful-paint']?.numericValue,
-      largestContentfulPaint: lhr.audits['largest-contentful-paint']?.numericValue,
-      totalBlockingTime: lhr.audits['total-blocking-time']?.numericValue,
-      cumulativeLayoutShift: lhr.audits['cumulative-layout-shift']?.numericValue,
-      speedIndex: lhr.audits['speed-index']?.numericValue,
+    // Add more conservative settings
+    throttling: {
+      requestLatencyMs: 0,
+      downloadThroughputKbps: 0,
+      uploadThroughputKbps: 0,
+      cpuSlowdownMultiplier: 1
     }
   };
+
+  try {
+    const runnerResult = await lighthouse(url, options);
+    const lhr = runnerResult.lhr;
+
+    const performanceScore = lhr.categories.performance.score * 100;
+    const seoScore = lhr.categories.seo.score * 100;
+
+    const performanceIssues = extractIssues(
+      lhr.audits,
+      'performance',
+      url
+    ).filter(issue => {
+      const perfAuditRefs = lhr.categories.performance.auditRefs.map(ref => ref.id);
+      return perfAuditRefs.includes(issue.id);
+    });
+
+    const seoIssues = extractIssues(
+      lhr.audits,
+      'seo',
+      url
+    ).filter(issue => {
+      const seoAuditRefs = lhr.categories.seo.auditRefs.map(ref => ref.id);
+      return seoAuditRefs.includes(issue.id);
+    });
+
+    return {
+      url,
+      performanceScore,
+      seoScore,
+      performanceIssues,
+      seoIssues,
+      metrics: {
+        firstContentfulPaint: lhr.audits['first-contentful-paint']?.numericValue,
+        largestContentfulPaint: lhr.audits['largest-contentful-paint']?.numericValue,
+        totalBlockingTime: lhr.audits['total-blocking-time']?.numericValue,
+        cumulativeLayoutShift: lhr.audits['cumulative-layout-shift']?.numericValue,
+        speedIndex: lhr.audits['speed-index']?.numericValue,
+      }
+    };
+  } catch (error) {
+    console.error(`Lighthouse audit failed for ${url}:`, error.message);
+    throw new Error(`Audit failed for ${url}: ${error.message}`);
+  }
 }
 
 /**
- * Main function to audit multiple endpoints
+ * Main function to audit multiple endpoints with proper resource management
  */
-export async function auditMultipleEndpoints(endpoints) {
-  const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+export async function auditMultipleEndpoints(endpoints, batchId = 0) {
+  // Use different ports for each batch to avoid conflicts
+  const basePort = 9222 + (batchId * 10);
+  const chrome = await chromeLauncher.launch({ 
+    chromeFlags: ['--headless', '--no-sandbox', '--disable-dev-shm-usage'],
+    port: basePort
+  });
   
   try {
     const results = [];
     
-    for (const endpoint of endpoints) {
+    // Add small delay between audits within a batch to reduce resource pressure
+    for (let i = 0; i < endpoints.length; i++) {
+      const endpoint = endpoints[i];
       console.log(`Auditing: ${endpoint}`);
-      const result = await auditSinglePage(endpoint, chrome);
-      results.push(result);
+      
+      try {
+        const result = await auditSinglePage(endpoint, chrome);
+        results.push(result);
+        
+        // Small delay between audits in the same batch
+        if (i < endpoints.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      } catch (error) {
+        console.error(`Failed to audit ${endpoint}:`, error.message);
+        // Continue with other endpoints in the batch
+      }
     }
 
     // Calculate overall scores (weighted average)

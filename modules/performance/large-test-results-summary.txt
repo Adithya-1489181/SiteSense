@@ -1,0 +1,38 @@
+============================================================
+SITESENSE PERFORMANCE & SEO AUDIT REPORT
+============================================================
+
+Audit Date: 10/24/2025, 12:08:30 PM
+Pages Audited: 1
+
+OVERALL SCORES
+------------------------------------------------------------
+Performance: 60/100 (Grade: D)
+SEO:         0/100 (Grade: F)
+
+PAGE-BY-PAGE RESULTS
+------------------------------------------------------------
+1. https://vcetputtur.ac.in/admissions/
+   Performance: 60/100 | SEO: 0/100
+   FCP: 2.58s | LCP: 2.69s
+
+TOP ISSUES
+------------------------------------------------------------
+Performance Issues:
+  1. Minimize main-thread work
+     Impact: High | Effort: Medium
+     Affects: 1 page(s)
+  2. Reduce JavaScript execution time
+     Impact: High | Effort: Medium
+     Affects: 1 page(s)
+  3. Reduce the impact of third-party code
+     Impact: High | Effort: Medium
+     Affects: 1 page(s)
+  4. Largest Contentful Paint element
+     Impact: High | Effort: Medium
+     Affects: 1 page(s)
+  5. Eliminate render-blocking resources
+     Impact: High | Effort: Medium
+     Affects: 1 page(s)
+
+============================================================

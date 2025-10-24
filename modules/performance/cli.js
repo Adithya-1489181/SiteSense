@@ -13,7 +13,7 @@ const args = process.argv.slice(2);
 
 function printUsage() {
   console.log(`
-SiteSense Performance & SEO Auditor
+SiteSense Performance & SEO Auditor - Batch Processing
 
 Usage:
   node cli.js <input-file.json> [options]
@@ -21,14 +21,18 @@ Usage:
 
 Options:
   -o, --output <file>     Save results to JSON file
+  -b, --batch-size <num>  Number of endpoints per batch (default: 5)
   -h, --help              Show this help message
 
 Examples:
-  # Audit from input file
+  # Audit from input file with default batch size (5)
   node cli.js input.json -o results.json
 
-  # Audit specific URLs
-  node cli.js --urls https://example.com https://example.com/about -o results.json
+  # Audit with custom batch size
+  node cli.js input.json -b 3 -o results.json
+
+  # Audit specific URLs with batch processing
+  node cli.js --urls https://example.com https://example.com/about -b 2 -o results.json
 
 Input JSON format:
   {
@@ -37,8 +41,15 @@ Input JSON format:
       "https://example.com/about",
       "https://example.com/contact"
     ],
-    "outputFile": "results.json" (optional)
+    "batchSize": 5,           // optional, defaults to 5
+    "outputFile": "results.json" // optional
   }
+
+Batch Processing:
+  - Runs multiple audits in parallel for better performance
+  - Automatically aggregates results from all batches
+  - Recommended batch size: 3-10 endpoints per batch
+  - Larger batches = faster but more resource intensive
 `);
 }
 
@@ -50,6 +61,7 @@ async function main() {
 
   try {
     let input = {};
+    let batchSize = 5; // Default batch size
 
     // Check if using --urls flag
     const urlsIndex = args.findIndex(arg => arg === '--urls');
@@ -71,6 +83,22 @@ async function main() {
     if (outputIndex !== -1 && args[outputIndex + 1]) {
       input.outputFile = args[outputIndex + 1];
     }
+
+    // Check for batch size flag
+    const batchIndex = args.findIndex(arg => arg === '-b' || arg === '--batch-size');
+    if (batchIndex !== -1 && args[batchIndex + 1]) {
+      batchSize = parseInt(args[batchIndex + 1], 10);
+      if (isNaN(batchSize) || batchSize < 1) {
+        console.error('Error: Batch size must be a positive integer');
+        process.exit(1);
+      }
+    }
+
+    // Override with CLI batch size if provided
+    input.batchSize = batchSize;
+
+    console.log(`\n🚀 Starting audit for ${input.endpoints.length} endpoints with batch size ${batchSize}...`);
+    console.log(`📊 This will run approximately ${Math.ceil(input.endpoints.length / batchSize)} batches in parallel\n`);
 
     // Run the audit
     const results = await runAudit(input);

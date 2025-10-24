@@ -1,0 +1,255 @@
+============================================================
+SITESENSE PERFORMANCE & SEO AUDIT REPORT
+============================================================
+
+Audit Date: 10/24/2025, 12:42:04 PM
+Pages Audited: 51
+
+OVERALL SCORES
+------------------------------------------------------------
+Performance: 35/100 (Grade: F)
+SEO:         48/100 (Grade: F)
+
+PAGE-BY-PAGE RESULTS
+------------------------------------------------------------
+1. https://vcetputtur.ac.in/
+   Performance: 61/100 | SEO: 92/100
+   FCP: 2.41s | LCP: 14.55s
+
+2. https://vcetputtur.ac.in/contact-us/
+   Performance: 68/100 | SEO: 100/100
+   FCP: 2.16s | LCP: 9.07s
+
+3. https://vcetputtur.ac.in/about-vcet/
+   Performance: 61/100 | SEO: 100/100
+   FCP: 3.84s | LCP: 10.59s
+
+4. https://vcetputtur.ac.in/academics
+   Performance: 73/100 | SEO: 92/100
+   FCP: 2.32s | LCP: 6.46s
+
+5. https://vcetputtur.ac.in/academics/ug-programs/
+   Performance: 67/100 | SEO: 92/100
+   FCP: 2.39s | LCP: 13.09s
+
+6. https://vcetputtur.ac.in/academics/ug-programs/computer-science-engineering/
+   Performance: 72/100 | SEO: 100/100
+   FCP: 2.02s | LCP: 7.66s
+
+7. https://vcetputtur.ac.in/academics/ug-programs/electronics-communication-engineering/
+   Performance: 67/100 | SEO: 92/100
+   FCP: 2.86s | LCP: 7.55s
+
+8. https://vcetputtur.ac.in/academics/ug-programs/artificial-intelligence-machine-learning/
+   Performance: 64/100 | SEO: 92/100
+   FCP: 4.04s | LCP: 7.06s
+
+9. https://vcetputtur.ac.in/academics/ug-programs/computer-science-engineering-data-science/
+   Performance: 71/100 | SEO: 92/100
+   FCP: 2.19s | LCP: 12.73s
+
+10. https://vcetputtur.ac.in/academics/ug-programs/mechanical-engineering/
+   Performance: 64/100 | SEO: 92/100
+   FCP: 4.00s | LCP: 7.25s
+
+11. https://vcetputtur.ac.in/academics/ug-programs/civil-engineering/
+   Performance: 75/100 | SEO: 92/100
+   FCP: 2.05s | LCP: 6.19s
+
+12. https://vcetputtur.ac.in/academics/pg-programs/
+   Performance: 65/100 | SEO: 92/100
+   FCP: 1.90s | LCP: 9.68s
+
+13. https://vcetputtur.ac.in/academics/pg-programs/department-of-business-administration/
+   Performance: 70/100 | SEO: 92/100
+   FCP: 2.24s | LCP: 7.08s
+
+14. https://vcetputtur.ac.in/academics/pg-programs/department-of-mca/
+   Performance: 72/100 | SEO: 92/100
+   FCP: 2.04s | LCP: 9.08s
+
+15. https://vcetputtur.ac.in/academics/basic-science/
+   Performance: 66/100 | SEO: 92/100
+   FCP: 3.54s | LCP: 8.22s
+
+16. https://vcetputtur.ac.in/academics/basic-science/department-of-mathematics/
+   Performance: 74/100 | SEO: 92/100
+   FCP: 2.09s | LCP: 6.89s
+
+17. https://vcetputtur.ac.in/academics/basic-science/department-of-physics/
+   Performance: 68/100 | SEO: 92/100
+   FCP: 2.63s | LCP: 7.40s
+
+18. https://vcetputtur.ac.in/academics/basic-science/department-of-chemistry/
+   Performance: 68/100 | SEO: 92/100
+   FCP: 2.74s | LCP: 7.55s
+
+19. https://vcetputtur.ac.in/academics/basic-science/department-of-humanities/
+   Performance: 64/100 | SEO: 92/100
+   FCP: 3.71s | LCP: 10.54s
+
+20. https://vcetputtur.ac.in/academics/department-of-physical-education/
+   Performance: 72/100 | SEO: 92/100
+   FCP: 2.19s | LCP: 9.23s
+
+21. https://vcetputtur.ac.in/facilities/ground/
+   Performance: 72/100 | SEO: 100/100
+   FCP: 1.97s | LCP: 11.05s
+
+22. https://vcetputtur.ac.in/facilities/hostel/
+   Performance: 63/100 | SEO: 100/100
+   FCP: 3.37s | LCP: 9.30s
+
+23. https://vcetputtur.ac.in/facilities/iciot-lab/
+   Performance: 74/100 | SEO: 100/100
+   FCP: 1.89s | LCP: 10.07s
+
+24. https://vcetputtur.ac.in/facilities/library/
+   Performance: 69/100 | SEO: 100/100
+   FCP: 2.04s | LCP: 10.29s
+
+25. https://vcetputtur.ac.in/facilities/transportation/
+   Performance: 74/100 | SEO: 100/100
+   FCP: 2.03s | LCP: 5.73s
+
+26. https://vcetputtur.ac.in/facilities/utilities/
+   Performance: 67/100 | SEO: 92/100
+   FCP: 1.92s | LCP: 13.53s
+
+27. https://vcetputtur.ac.in/gallery
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+28. https://vcetputtur.ac.in/category/activities/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+29. https://vcetputtur.ac.in/achievements
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+30. https://vcetputtur.ac.in/student-support/anti-ragging-squad/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+31. https://vcetputtur.ac.in/student-support/anti-sexual-harassment-squad/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+32. https://vcetputtur.ac.in/student-support/grievance-redressal-cell/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+33. https://vcetputtur.ac.in/student-support/sc-st-obc-cell/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+34. https://vcetputtur.ac.in/student-support/college-internal-complaint-committee/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+35. https://vcetputtur.ac.in/student-support/anti-ragging-committee/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+36. https://vcetputtur.ac.in/associations/youth-red-cross-national-service-scheme-nss-cell/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+37. https://vcetputtur.ac.in/associations/entrepreneurs-development-cell/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+38. https://vcetputtur.ac.in/associations/iste-faculty-chapter-student-chapter/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+39. https://vcetputtur.ac.in/placements/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+40. https://vcetputtur.ac.in/admissions/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+41. https://vcetputtur.ac.in/calendar-of-events/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+42. https://vcetputtur.ac.in/news-and-events/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+43. https://vcetputtur.ac.in/faculty/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+44. https://vcetputtur.ac.in/mandatory-disclosures/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+45. https://vcetputtur.ac.in/aicte-eoa/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+46. https://vcetputtur.ac.in/service-rules/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+47. https://vcetputtur.ac.in/audited-statement/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+48. https://vcetputtur.ac.in/academics/ug-programs
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+49. https://vcetputtur.ac.in/academics/pg-programs
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+50. https://vcetputtur.ac.in/academics/basic-science
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+51. https://vcetputtur.ac.in/five-day-faculty-development-program/
+   Performance: 0/100 | SEO: 0/100
+   FCP: NaNs | LCP: NaNs
+
+TOP ISSUES
+------------------------------------------------------------
+Performance Issues:
+  1. Minimize main-thread work
+     Impact: High | Effort: Medium
+     Affects: 1 page(s)
+  2. Preconnect to required origins
+     Impact: High | Effort: High
+     Affects: 3 page(s)
+  3. Largest Contentful Paint element
+     Impact: High | Effort: Medium
+     Affects: 26 page(s)
+  4. Defer offscreen images
+     Impact: High | Effort: High
+     Affects: 13 page(s)
+  5. Eliminate render-blocking resources
+     Impact: High | Effort: Medium
+     Affects: 26 page(s)
+
+SEO Issues:
+  1. Links do not have descriptive text
+     Impact: High | Effort: Low
+     Affects: 1 page(s)
+  2. Document does not have a meta description
+     Impact: High | Effort: Low
+     Affects: 16 page(s)
+  3. robots.txt is not valid
+     Impact: High | Effort: Low
+     Affects: 1 page(s)
+
+QUICK WINS (High Impact, Low Effort)
+------------------------------------------------------------
+  1. Links do not have descriptive text (seo)
+  2. Document does not have a meta description (seo)
+  3. robots.txt is not valid (seo)
+
+============================================================

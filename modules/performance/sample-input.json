@@ -1,0 +1,30 @@
+{
+  "endpoints": [
+    "https://vcetputtur.ac.in/",
+    "https://vcetputtur.ac.in/contact-us/",
+    "https://vcetputtur.ac.in/about-vcet/",
+    "https://vcetputtur.ac.in/academics",
+    "https://vcetputtur.ac.in/academics/ug-programs/",
+    "https://vcetputtur.ac.in/academics/ug-programs/computer-science-engineering/",
+    "https://vcetputtur.ac.in/academics/ug-programs/electronics-communication-engineering/",
+    "https://vcetputtur.ac.in/academics/ug-programs/artificial-intelligence-machine-learning/",
+    "https://vcetputtur.ac.in/academics/ug-programs/computer-science-engineering-data-science/",
+    "https://vcetputtur.ac.in/academics/ug-programs/mechanical-engineering/",
+    "https://vcetputtur.ac.in/academics/ug-programs/civil-engineering/",
+    "https://vcetputtur.ac.in/academics/pg-programs/",
+    "https://vcetputtur.ac.in/academics/pg-programs/department-of-business-administration/",
+    "https://vcetputtur.ac.in/academics/pg-programs/department-of-mca/",
+    "https://vcetputtur.ac.in/academics/basic-science/",
+    "https://vcetputtur.ac.in/facilities/ground/",
+    "https://vcetputtur.ac.in/facilities/hostel/",
+    "https://vcetputtur.ac.in/facilities/iciot-lab/",
+    "https://vcetputtur.ac.in/facilities/library/",
+    "https://vcetputtur.ac.in/facilities/transportation/",
+    "https://vcetputtur.ac.in/gallery",
+    "https://vcetputtur.ac.in/category/activities/",
+    "https://vcetputtur.ac.in/achievements",
+    "https://vcetputtur.ac.in/placements/",
+    "https://vcetputtur.ac.in/admissions/"
+  ],
+  "outputFile": "audit-results-sample.json"
+}

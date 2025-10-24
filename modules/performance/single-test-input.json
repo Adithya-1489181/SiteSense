@@ -1,0 +1,6 @@
+{
+  "endpoints": [
+    "https://example.com"
+  ],
+  "outputFile": "single-test-results.json"
+}
