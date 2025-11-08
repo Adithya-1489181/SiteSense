@@ -3,4 +3,5 @@ dist/
 .next/ 
 .env 
 coverage/ 
-.DS_Store 
+.DS_Store
+apps/web/next-env.d.ts

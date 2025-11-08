@@ -26,5 +26,11 @@
     "apps/*",
     "modules/*",
     "db"
-  ]
+  ],
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13"
+  },
+  "dependencies": {
+    "framer-motion": "^12.23.22"
+  }
 }

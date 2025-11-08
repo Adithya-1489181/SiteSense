@@ -1,0 +1,203 @@
+{
+  "summary": {
+    "totalPages": 3,
+    "overallPerformanceScore": 78,
+    "overallSeoScore": 92,
+    "performanceGrade": "C",
+    "seoGrade": "A",
+    "timestamp": "2025-10-23T12:00:00.000Z"
+  },
+  "pageResults": [
+    {
+      "url": "https://example.com",
+      "performanceScore": 85,
+      "seoScore": 95,
+      "metrics": {
+        "firstContentfulPaint": 1200,
+        "largestContentfulPaint": 2400,
+        "totalBlockingTime": 150,
+        "cumulativeLayoutShift": 0.05,
+        "speedIndex": 2000
+      }
+    },
+    {
+      "url": "https://example.com/about",
+      "performanceScore": 72,
+      "seoScore": 90,
+      "metrics": {
+        "firstContentfulPaint": 1500,
+        "largestContentfulPaint": 3200,
+        "totalBlockingTime": 250,
+        "cumulativeLayoutShift": 0.12,
+        "speedIndex": 2800
+      }
+    },
+    {
+      "url": "https://example.com/contact",
+      "performanceScore": 76,
+      "seoScore": 91,
+      "metrics": {
+        "firstContentfulPaint": 1300,
+        "largestContentfulPaint": 2800,
+        "totalBlockingTime": 180,
+        "cumulativeLayoutShift": 0.08,
+        "speedIndex": 2200
+      }
+    }
+  ],
+  "issues": {
+    "performance": [
+      {
+        "id": "unused-javascript",
+        "title": "Remove unused JavaScript",
+        "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity.",
+        "category": "performance",
+        "impact": "High",
+        "effort": "High",
+        "affectedPages": [
+          {
+            "url": "https://example.com",
+            "score": 0.45,
+            "displayValue": "200 KB"
+          },
+          {
+            "url": "https://example.com/about",
+            "score": 0.38,
+            "displayValue": "280 KB"
+          }
+        ],
+        "averageScore": "0.42",
+        "occurrences": 2
+      },
+      {
+        "id": "modern-image-formats",
+        "title": "Serve images in next-gen formats",
+        "description": "Image formats like WebP and AVIF often provide better compression than PNG or JPEG, which means faster downloads and less data consumption.",
+        "category": "performance",
+        "impact": "Medium",
+        "effort": "High",
+        "affectedPages": [
+          {
+            "url": "https://example.com",
+            "score": 0.65,
+            "displayValue": "150 KB savings"
+          },
+          {
+            "url": "https://example.com/about",
+            "score": 0.55,
+            "displayValue": "220 KB savings"
+          },
+          {
+            "url": "https://example.com/contact",
+            "score": 0.60,
+            "displayValue": "180 KB savings"
+          }
+        ],
+        "averageScore": "0.60",
+        "occurrences": 3
+      },
+      {
+        "id": "render-blocking-resources",
+        "title": "Eliminate render-blocking resources",
+        "description": "Resources are blocking the first paint of your page. Consider delivering critical JS/CSS inline and deferring all non-critical JS/styles.",
+        "category": "performance",
+        "impact": "High",
+        "effort": "Medium",
+        "affectedPages": [
+          {
+            "url": "https://example.com/about",
+            "score": 0.40,
+            "displayValue": "450 ms"
+          }
+        ],
+        "averageScore": "0.40",
+        "occurrences": 1
+      }
+    ],
+    "seo": [
+      {
+        "id": "meta-description",
+        "title": "Document does not have a meta description",
+        "description": "Meta descriptions may be included in search results to concisely summarize page content.",
+        "category": "seo",
+        "impact": "Medium",
+        "effort": "Low",
+        "affectedPages": [
+          {
+            "url": "https://example.com/contact",
+            "score": 0,
+            "displayValue": null
+          }
+        ],
+        "averageScore": "0.00",
+        "occurrences": 1
+      },
+      {
+        "id": "image-alt",
+        "title": "Image elements do not have [alt] attributes",
+        "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute.",
+        "category": "seo",
+        "impact": "Medium",
+        "effort": "Low",
+        "affectedPages": [
+          {
+            "url": "https://example.com",
+            "score": 0.75,
+            "displayValue": "3 images"
+          },
+          {
+            "url": "https://example.com/about",
+            "score": 0.50,
+            "displayValue": "8 images"
+          }
+        ],
+        "averageScore": "0.63",
+        "occurrences": 2
+      }
+    ]
+  },
+  "detailedPageIssues": [
+    {
+      "url": "https://example.com",
+      "performanceIssueCount": 2,
+      "seoIssueCount": 1,
+      "performanceIssues": [
+        {
+          "id": "unused-javascript",
+          "title": "Remove unused JavaScript",
+          "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity.",
+          "score": 0.45,
+          "displayValue": "200 KB",
+          "impact": "High",
+          "effort": "High",
+          "category": "performance",
+          "page": "https://example.com"
+        },
+        {
+          "id": "modern-image-formats",
+          "title": "Serve images in next-gen formats",
+          "description": "Image formats like WebP and AVIF often provide better compression than PNG or JPEG.",
+          "score": 0.65,
+          "displayValue": "150 KB savings",
+          "impact": "Medium",
+          "effort": "High",
+          "category": "performance",
+          "page": "https://example.com"
+        }
+      ],
+      "seoIssues": [
+        {
+          "id": "image-alt",
+          "title": "Image elements do not have [alt] attributes",
+          "description": "Informative elements should aim for short, descriptive alternate text.",
+          "score": 0.75,
+          "displayValue": "3 images",
+          "impact": "Medium",
+          "effort": "Low",
+          "category": "seo",
+          "page": "https://example.com"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+# Output files
+*-results.json
+audit-results.json
+example-results.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

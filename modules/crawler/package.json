@@ -1,14 +1,25 @@
 {
   "name": "@sitesense/crawler",
   "version": "1.0.0",
-  "description": "",
+  "description": "Endpoint discovery service for web performance and accessibility auditing.",
   "main": "index.js",
   "scripts": {
+    "start-test": "node index.js https://example.com",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "crawler",
+    "lighthouse",
+    "axios",
+    "cheerio",
+    "web-audit"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "axios": "^1.12.2",
+    "cheerio": "^1.0.0-rc.x"
+  }
 }

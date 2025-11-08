@@ -1,0 +1,63 @@
+============================================================
+SITESENSE PERFORMANCE & SEO AUDIT REPORT
+============================================================
+
+Audit Date: 10/24/2025, 12:28:10 PM
+Pages Audited: 3
+
+OVERALL SCORES
+------------------------------------------------------------
+Performance: 83/100 (Grade: A)
+SEO:         87/100 (Grade: A)
+
+PAGE-BY-PAGE RESULTS
+------------------------------------------------------------
+1. https://example.com
+   Performance: 100/100 | SEO: 80/100
+   FCP: 773ms | LCP: 773ms
+
+2. https://google.com
+   Performance: 94/100 | SEO: 82/100
+   FCP: 2.16s | LCP: 2.18s
+
+3. https://github.com
+   Performance: 54/100 | SEO: 100/100
+   FCP: 3.85s | LCP: 6.39s
+
+TOP ISSUES
+------------------------------------------------------------
+Performance Issues:
+  1. Avoid multiple page redirects
+     Impact: High | Effort: High
+     Affects: 1 page(s)
+  2. Document request latency
+     Impact: High | Effort: Medium
+     Affects: 1 page(s)
+  3. Forced reflow
+     Impact: High | Effort: Medium
+     Affects: 2 page(s)
+  4. Network dependency tree
+     Impact: High | Effort: Medium
+     Affects: 2 page(s)
+  5. Minimize main-thread work
+     Impact: High | Effort: Medium
+     Affects: 1 page(s)
+
+SEO Issues:
+  1. Document does not have a meta description
+     Impact: High | Effort: Low
+     Affects: 2 page(s)
+  2. Links do not have descriptive text
+     Impact: High | Effort: Low
+     Affects: 1 page(s)
+  3. Links are not crawlable
+     Impact: High | Effort: Low
+     Affects: 1 page(s)
+
+QUICK WINS (High Impact, Low Effort)
+------------------------------------------------------------
+  1. Document does not have a meta description (seo)
+  2. Links do not have descriptive text (seo)
+  3. Links are not crawlable (seo)
+
+============================================================

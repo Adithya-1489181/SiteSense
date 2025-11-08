@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SiteSense Performance Audit Input",
+  "description": "Configuration for multi-endpoint performance and SEO auditing",
+  "type": "object",
+  "required": ["endpoints"],
+  "properties": {
+    "endpoints": {
+      "type": "array",
+      "description": "Array of URLs to audit",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https?://",
+        "examples": [
+          "https://example.com",
+          "https://example.com/about"
+        ]
+      }
+    },
+    "outputFile": {
+      "type": "string",
+      "description": "Path where results will be saved (JSON format)",
+      "examples": [
+        "results.json",
+        "./output/audit-2025-10-23.json"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "endpoints": [
+        "https://example.com",
+        "https://example.com/about",
+        "https://example.com/contact"
+      ],
+      "outputFile": "audit-results.json"
+    }
+  ]
+}

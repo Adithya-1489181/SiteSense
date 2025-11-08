@@ -1,0 +1,114 @@
+/* ==============================
+   Tailwind Base Imports
+============================== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==============================
+   CSS Variables / Theme Colors
+============================== */
+:root {
+  --primary-color: #1E1D1D;
+  --secondary-color: #6D6F6F;
+  --tertiary-color: #ECEDEE;
+  --quaternary-color: #FFFFFF;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.text-tertiary {
+  color: var(--tertiary-color);
+}
+
+.button-bg {
+  background-color: var(--primary-color);
+}
+.button-bg:hover {
+  background-color: #1e1d1dcc; /* Use your --primary-color with 0.7 alpha */
+  transform: scale(1.1);
+  transition: background-color 0.2s, transform 0.2s ease-in-out;
+}
+
+html, body {
+  font-family: 'Inter', sans-serif; /* Replace with your preferred font */
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ==============================
+   Headings / Typography
+============================== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+small, .text-muted {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+
+/* ==============================
+   Containers / Layout Helpers
+============================== */
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@layer base {
+  :root {
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
