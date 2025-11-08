@@ -1,0 +1,171 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SiteSense Security Module Input Schema",
+  "description": "Validation schema for security audit input configuration",
+  "type": "object",
+  "required": ["endpoints"],
+  "properties": {
+    "endpoints": {
+      "type": "array",
+      "description": "Array of URLs to perform security scanning on",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https?://",
+        "description": "Valid HTTP or HTTPS URL"
+      }
+    },
+    "outputFile": {
+      "type": "string",
+      "description": "Path to output file for results (optional)",
+      "pattern": "\\.json$",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "options": {
+      "type": "object",
+      "description": "Optional scanning configuration",
+      "properties": {
+        "maxDepth": {
+          "type": "integer",
+          "description": "Maximum spider crawl depth",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 5
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Scan timeout in milliseconds",
+          "minimum": 10000,
+          "maximum": 1800000,
+          "default": 300000
+        },
+        "passiveScanOnly": {
+          "type": "boolean",
+          "description": "Perform only passive scanning (faster, less thorough)",
+          "default": false
+        },
+        "batchSize": {
+          "type": "integer",
+          "description": "Number of URLs to process in each batch",
+          "minimum": 1,
+          "maximum": 20,
+          "default": 5
+        },
+        "excludeUrls": {
+          "type": "array",
+          "description": "URL patterns to exclude from scanning",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "skipCrawling": {
+          "type": "boolean",
+          "description": "Skip crawling and scan only provided endpoints",
+          "default": false
+        },
+        "endpoints": {
+          "type": "array",
+          "description": "Specific endpoints to scan when skipCrawling is true",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "uniqueItems": true
+        },
+        "scanPolicyName": {
+          "type": "string",
+          "description": "ZAP scan policy name to use",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "contextName": {
+          "type": "string",
+          "description": "ZAP context name for the scan",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "userAgent": {
+          "type": "string",
+          "description": "Custom user agent string for requests",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "headers": {
+          "type": "object",
+          "description": "Custom HTTP headers to include in requests",
+          "patternProperties": {
+            "^[a-zA-Z][a-zA-Z0-9-]*$": {
+              "type": "string"
+            }
+          }
+        },
+        "authentication": {
+          "type": "object",
+          "description": "Authentication configuration",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["basic", "form", "script"],
+              "description": "Authentication method"
+            },
+            "loginUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Login page URL for form authentication"
+            },
+            "username": {
+              "type": "string",
+              "description": "Username for authentication"
+            },
+            "password": {
+              "type": "string",
+              "description": "Password for authentication"
+            },
+            "usernameField": {
+              "type": "string",
+              "description": "Username field name for form authentication"
+            },
+            "passwordField": {
+              "type": "string",
+              "description": "Password field name for form authentication"
+            }
+          },
+          "required": ["type"],
+          "if": {
+            "properties": { "type": { "const": "form" } }
+          },
+          "then": {
+            "required": ["loginUrl", "username", "password", "usernameField", "passwordField"]
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "endpoints": ["https://yoursite.com"],
+      "outputFile": "security-results.json"
+    },
+    {
+      "endpoints": [
+        "https://yoursite.com",
+        "https://yoursite.com/login",
+        "https://yoursite.com/dashboard"
+      ],
+      "outputFile": "comprehensive-security-audit.json",
+      "options": {
+        "maxDepth": 3,
+        "timeout": 600000,
+        "batchSize": 3,
+        "excludeUrls": ["logout", "admin"]
+      }
+    }
+  ]
+}

@@ -1,20 +1,46 @@
 {
   "name": "@sitesense/security",
   "version": "1.0.0",
-  "description": "Handles Website security Scans and OWASP ZAP Integration.",
-  "main": "src/index.ts",
+  "description": "Security auditing module for SiteSense using OWASP ZAP API",
+  "main": "index.js",
   "type": "module",
+  "private": true,
   "scripts": {
-    "test": "echo \"No tests yet\"",
-    "lint": "eslint . --ext .ts"
+    "audit": "node cli.js",
+    "test": "node --test",
+    "start-zap": "docker run --rm -p 8080:8080 zaproxy/zap-stable zap-api-scan.py -t 'http://host.docker.internal:3000' -J report.json || echo 'ZAP Docker not found, please install ZAP locally'",
+    "help": "echo 'Available commands: audit, start-zap'"
   },
   "dependencies": {
-    "axios": "^1.6.0",
-    "dotenv": "^17.2.3",
-    "sitesense": "file:../.."
+    "axios": "^1.6.0"
   },
   "devDependencies": {
-    "@types/node": "^24.7.2",
-    "typescript": "^5.0.0"
+    "@types/node": "^20.0.0"
+  },
+  "keywords": [
+    "security",
+    "zap",
+    "owasp",
+    "vulnerability",
+    "scanning",
+    "web-security",
+    "security-audit",
+    "penetration-testing",
+    "security-scanner",
+    "sitesense"
+  ],
+  "author": "SiteSense Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Adithya-1489181/SiteSense.git",
+    "directory": "modules/security"
+  },
+  "bugs": {
+    "url": "https://github.com/Adithya-1489181/SiteSense/issues"
+  },
+  "homepage": "https://github.com/Adithya-1489181/SiteSense#readme",
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
