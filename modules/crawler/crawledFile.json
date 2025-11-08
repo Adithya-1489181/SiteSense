@@ -1,0 +1,40 @@
+{
+  "scan_id": "crawl-1760629209994",
+  "start_url": "https://youtube.com/",
+  "total_endpoints_found": 28,
+  "timestamp": "2025-10-16T15:40:09.994Z",
+  "endpoints": [
+    "https://youtube.com/",
+    "https://youtube.com/t/contact_us/",
+    "https://youtube.com/t/terms",
+    "https://youtube.com/t/privacy",
+    "https://youtube.com/new",
+    "https://youtube.com/yt/about",
+    "https://youtube.com/t/community_guidelines",
+    "https://youtube.com/yt/jobs",
+    "https://youtube.com/t/press",
+    "https://youtube.com/t/advertising_overview",
+    "https://youtube.com/t/contentid",
+    "https://youtube.com/yt/dev",
+    "https://youtube.com/t/terms_paidservice",
+    "https://youtube.com/t/usage_paycontent",
+    "https://youtube.com/t/policy_cns",
+    "https://youtube.com/t/copyright_notice",
+    "https://youtube.com/t/technologies",
+    "https://youtube.com/t/faq",
+    "https://youtube.com/t/privacy/frameworks",
+    "https://youtube.com/t/privacy/key-terms",
+    "https://youtube.com/t/privacy/google-partners",
+    "https://youtube.com/t/privacy/archive",
+    "https://youtube.com/t/technologies/location-data",
+    "https://youtube.com/t/technologies/product-privacy",
+    "https://youtube.com/t/technologies/partner-sites",
+    "https://youtube.com/t/technologies/ads",
+    "https://youtube.com/t/technologies/retention",
+    "https://youtube.com/t/technologies/cookies"
+  ],
+  "metadata": {
+    "max_depth_used": 2,
+    "pages_scanned": 28
+  }
+}

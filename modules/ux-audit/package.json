@@ -10,5 +10,9 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "axe-core": "^4.11.0",
+    "puppeteer": "^24.25.0"
+  }
 }
