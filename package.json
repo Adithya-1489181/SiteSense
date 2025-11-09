@@ -7,7 +7,9 @@
     "bootstrap": "npm install",
     "dev:web": "npm --workspace=apps/web run dev",
     "dev:api": "npm --workspace=apps/api run dev",
-    "dev:cli": "npm --workspace=apps/cli run dev"
+    "dev:cli": "npm --workspace=apps/cli run dev",
+    "start:api": "npm --workspace=apps/api run start",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\""
   },
   "repository": {
     "type": "git",
@@ -28,9 +30,46 @@
     "db"
   ],
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.13"
+    "@axe-core/puppeteer": "^4.10.2",
+    "@tailwindcss/postcss": "^4.1.13",
+    "@types/node": "^24.6.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.36.0",
+    "eslint-config-next": "^15.5.4",
+    "lighthouse": "^12.8.2",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "framer-motion": "^12.23.22"
+    "@hookform/resolvers": "^5.2.2",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-progress": "^1.1.7",
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tooltip": "^1.2.8",
+    "axe-core": "^4.11.0",
+    "axios": "^1.12.2",
+    "cheerio": "^1.0.0-rc.x",
+    "chrome-launcher": "^1.1.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.22",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.3",
+    "lucide-react": "^0.544.0",
+    "next": "^15.5.4",
+    "puppeteer": "^24.25.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hook-form": "^7.63.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^4.1.11"
   }
 }

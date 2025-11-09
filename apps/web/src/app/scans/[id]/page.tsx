@@ -32,16 +32,7 @@ export default function ScanReportPage({ params }: { params: { id: string } }) {
     const router = useRouter();
     const [scan, setScan] = useState<ScanResult | null>(null);
     const [activeTab, setActiveTab] = useState<'overview' | 'recommendations' | 'actions'>('overview');
-    const [issues, setIssues] = useState<Issue[]>([
-        { title: 'Optimize image sizes', severity: 'major', impact: 8, effort: 3, module: 'Performance', fixed: false },
-        { title: 'Add meta descriptions', severity: 'critical', impact: 9, effort: 2, module: 'SEO', fixed: false },
-        { title: 'Improve color contrast', severity: 'minor', impact: 5, effort: 4, module: 'UX', fixed: true },
-        { title: 'Enable HTTPS', severity: 'critical', impact: 10, effort: 5, module: 'Security', fixed: false },
-        { title: 'Minify CSS files', severity: 'minor', impact: 4, effort: 2, module: 'Performance', fixed: true },
-        { title: 'Fix broken links', severity: 'major', impact: 7, effort: 3, module: 'SEO', fixed: false },
-        { title: 'Add ARIA labels', severity: 'major', impact: 6, effort: 5, module: 'UX', fixed: false },
-        { title: 'Update SSL certificate', severity: 'minor', impact: 3, effort: 1, module: 'Security', fixed: true },
-    ]);
+    const [issues, setIssues] = useState<Issue[]>([]);
 
     useEffect(() => {
         const stored = localStorage.getItem('recentScans');
@@ -49,13 +40,115 @@ export default function ScanReportPage({ params }: { params: { id: string } }) {
             const scans = JSON.parse(stored);
             const scanIndex = parseInt(params.id);
             if (scans[scanIndex]) {
-                setScan({
+                const scanData = {
                     ...scans[scanIndex],
                     timestamp: new Date(scans[scanIndex].timestamp)
-                });
+                };
+                setScan(scanData);
+                
+                // Generate issues from real scan results
+                if (scanData.results && scanData.status === 'success') {
+                    const generatedIssues = generateIssuesFromResults(scanData.results);
+                    setIssues(generatedIssues);
+                }
             }
         }
     }, [params.id]);
+
+    // Helper function to generate issues from scan results
+    const generateIssuesFromResults = (results: any): Issue[] => {
+        const issuesList: Issue[] = [];
+        
+        console.log('=== GENERATING ISSUES ===');
+        console.log('Full results object:', JSON.stringify(results, null, 2));
+        console.log('Performance issues:', results.performance?.issues);
+        console.log('SEO issues:', results.seo?.issues);
+        console.log('UX issues:', results.ux?.issues);
+        console.log('Security vulnerabilities:', results.security?.vulnerabilities);
+        
+        // Add performance issues - these come from Lighthouse audits
+        if (results.performance?.issues && Array.isArray(results.performance.issues)) {
+            console.log(`Processing ${results.performance.issues.length} performance issues`);
+            results.performance.issues.forEach((issue: any) => {
+                // Map Lighthouse impact to severity
+                const impactLevel = issue.impact?.toLowerCase();
+                const effortLevel = issue.effort?.toLowerCase();
+                
+                issuesList.push({
+                    title: issue.title || issue.description || issue.id,
+                    severity: impactLevel === 'high' ? 'critical' : impactLevel === 'medium' ? 'major' : 'minor',
+                    impact: impactLevel === 'high' ? 9 : impactLevel === 'medium' ? 6 : 3,
+                    effort: effortLevel === 'high' ? 8 : effortLevel === 'medium' ? 5 : 2,
+                    module: 'Performance',
+                    fixed: false
+                });
+            });
+            console.log(`Added ${results.performance.issues.length} performance issues`);
+        }
+        
+        // Add SEO issues - these also come from Lighthouse audits
+        if (results.seo?.issues && Array.isArray(results.seo.issues)) {
+            console.log(`Processing ${results.seo.issues.length} SEO issues`);
+            results.seo.issues.forEach((issue: any) => {
+                const impactLevel = issue.impact?.toLowerCase();
+                const effortLevel = issue.effort?.toLowerCase();
+                
+                issuesList.push({
+                    title: issue.title || issue.description || issue.id,
+                    severity: impactLevel === 'high' ? 'critical' : impactLevel === 'medium' ? 'major' : 'minor',
+                    impact: impactLevel === 'high' ? 8 : impactLevel === 'medium' ? 6 : 4,
+                    effort: effortLevel === 'high' ? 7 : effortLevel === 'medium' ? 4 : 2,
+                    module: 'SEO',
+                    fixed: false
+                });
+            });
+            console.log(`Added ${results.seo.issues.length} SEO issues`);
+        }
+        
+        // Add UX/Accessibility issues - these come from axe-core
+        if (results.ux?.issues && Array.isArray(results.ux.issues)) {
+            console.log(`Processing ${results.ux.issues.length} UX issues`);
+            results.ux.issues.forEach((issue: any) => {
+                // Map axe-core impact to severity
+                const impactLevel = issue.impact?.toLowerCase() || issue.severity?.toLowerCase();
+                
+                issuesList.push({
+                    title: issue.description || issue.id || 'Accessibility Issue',
+                    severity: impactLevel === 'critical' || impactLevel === 'serious' ? 'critical' 
+                            : impactLevel === 'moderate' ? 'major' : 'minor',
+                    impact: impactLevel === 'critical' ? 9 
+                          : impactLevel === 'serious' ? 8
+                          : impactLevel === 'moderate' ? 6 : 4,
+                    effort: 5, // Default medium effort for accessibility fixes
+                    module: 'UX',
+                    fixed: false
+                });
+            });
+            console.log(`Added ${results.ux.issues.length} UX issues`);
+        }
+        
+        // Add security vulnerabilities - these come from OWASP ZAP
+        if (results.security?.vulnerabilities && Array.isArray(results.security.vulnerabilities)) {
+            console.log(`Processing ${results.security.vulnerabilities.length} security vulnerabilities`);
+            results.security.vulnerabilities.forEach((vuln: any) => {
+                const riskLevel = vuln.severity?.toLowerCase() || vuln.risk?.toLowerCase();
+                
+                issuesList.push({
+                    title: vuln.title || vuln.name || vuln.description || 'Security Vulnerability',
+                    severity: riskLevel === 'high' ? 'critical' : riskLevel === 'medium' ? 'major' : 'minor',
+                    impact: riskLevel === 'high' ? 10 : riskLevel === 'medium' ? 7 : 4,
+                    effort: riskLevel === 'high' ? 8 : riskLevel === 'medium' ? 5 : 3,
+                    module: 'Security',
+                    fixed: false
+                });
+            });
+            console.log(`Added ${results.security.vulnerabilities.length} security vulnerabilities`);
+        }
+        
+        console.log(`=== TOTAL ISSUES GENERATED: ${issuesList.length} ===`);
+        console.log('Issues breakdown:', issuesList.map(i => `${i.module}: ${(i.title || 'Untitled').substring(0, 50)}`));
+        return issuesList;
+    };
 
     const toggleIssue = (index: number) => {
         setIssues(prevIssues => 

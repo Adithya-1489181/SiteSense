@@ -70,76 +70,103 @@ export default function ScanPage() {
         // Add to recent scans
         setRecentScans(prev => [newScan, ...prev.slice(0, 9)]); // Keep last 10
 
-        // Simulate scan process (replace with actual API call)
-        setTimeout(() => {
-            // Generate scores across all ranges (low: ≤30, medium: 31-70, high: >70)
-            const generateScore = () => {
-                const rand = Math.random();
-                if (rand < 0.33) {
-                    // Low score: 10-30
-                    return Math.floor(Math.random() * 21) + 10;
-                } else if (rand < 0.67) {
-                    // Medium score: 31-70
-                    return Math.floor(Math.random() * 40) + 31;
-                } else {
-                    // High score: 71-100
-                    return Math.floor(Math.random() * 30) + 71;
-                }
-            };
+        try {
+            // Call the backend API to start the scan
+            const response = await fetch('http://localhost:3001/api/scan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url })
+            });
 
-            // Generate mock results
-            const mockResults = {
-                performance: { 
-                    score: generateScore(),
-                    metrics: {
-                        loadTime: (Math.random() * 2 + 1).toFixed(2) + 's',
-                        firstContentfulPaint: (Math.random() * 1 + 0.5).toFixed(2) + 's',
-                        timeToInteractive: (Math.random() * 3 + 1).toFixed(2) + 's'
+            if (!response.ok) {
+                throw new Error('Failed to start scan');
+            }
+
+            const { scanId } = await response.json();
+
+            // Poll for scan results
+            const pollInterval = setInterval(async () => {
+                try {
+                    const statusResponse = await fetch(`http://localhost:3001/api/scan/${scanId}`);
+                    
+                    if (!statusResponse.ok) {
+                        throw new Error('Failed to get scan status');
                     }
-                },
-                seo: { 
-                    score: generateScore(),
-                    issues: [
-                        'Missing meta description',
-                        'Image alt tags needed',
-                        'H1 tag optimization suggested'
-                    ]
-                },
-                ux: { 
-                    score: generateScore(),
-                    recommendations: [
-                        'Improve mobile responsiveness',
-                        'Enhance color contrast',
-                        'Add ARIA labels for accessibility'
-                    ]
-                },
-                security: { 
-                    score: generateScore(),
-                    vulnerabilities: [
-                        'SSL certificate valid',
-                        'No mixed content detected'
-                    ]
+
+                    const scanData = await statusResponse.json();
+
+                    if (scanData.status === 'success' && scanData.results) {
+                        clearInterval(pollInterval);
+
+                        // Transform API results to match frontend format
+                        // Keep full objects with all metadata for issue generation
+                        const finalResults = {
+                            performance: {
+                                score: scanData.results.performance.score,
+                                metrics: {
+                                    loadTime: `${(scanData.results.performance.metrics.firstContentfulPaint / 1000).toFixed(2)}s`,
+                                    firstContentfulPaint: `${(scanData.results.performance.metrics.firstContentfulPaint / 1000).toFixed(2)}s`,
+                                    timeToInteractive: `${(scanData.results.performance.metrics.totalBlockingTime / 1000).toFixed(2)}s`
+                                },
+                                issues: scanData.results.performance.issues || [] // Keep full issue objects
+                            },
+                            seo: {
+                                score: scanData.results.seo.score,
+                                issues: scanData.results.seo.issues || [] // Keep full issue objects
+                            },
+                            ux: {
+                                score: scanData.results.ux.score,
+                                recommendations: scanData.results.ux.recommendations || [],
+                                issues: scanData.results.ux.issues || [] // Add issues array
+                            },
+                            security: {
+                                score: scanData.results.security.score,
+                                vulnerabilities: scanData.results.security.vulnerabilities || [] // Keep full vulnerability objects
+                            },
+                            overall: scanData.results.overall
+                        };
+
+                        // Update the scan with results
+                        setRecentScans(prev =>
+                            prev.map((scan, idx) =>
+                                idx === 0 ? { ...scan, status: 'success' as const, results: finalResults } : scan
+                            )
+                        );
+
+                        setIsScanning(false);
+                    } else if (scanData.status === 'error') {
+                        clearInterval(pollInterval);
+                        console.error('Scan failed:', scanData.error);
+                        
+                        // Update scan status to error
+                        setRecentScans(prev =>
+                            prev.map((scan, idx) =>
+                                idx === 0 ? { ...scan, status: 'error' as const } : scan
+                            )
+                        );
+                        
+                        setIsScanning(false);
+                    }
+                    // If still scanning, keep polling
+                } catch (pollError) {
+                    console.error('Error polling scan status:', pollError);
                 }
-            };
+            }, 3000); // Poll every 3 seconds
 
-            const overallScore = Math.floor(
-                (mockResults.performance.score + 
-                 mockResults.seo.score + 
-                 mockResults.ux.score + 
-                 mockResults.security.score) / 4
-            );
-
-            const finalResults = { ...mockResults, overall: overallScore };
-
-            // Update the scan with results
-            setRecentScans(prev => 
-                prev.map((scan, idx) => 
-                    idx === 0 ? { ...scan, status: 'success' as const, results: finalResults } : scan
+        } catch (error) {
+            console.error('Error starting scan:', error);
+            
+            // Update scan status to error
+            setRecentScans(prev =>
+                prev.map((scan, idx) =>
+                    idx === 0 ? { ...scan, status: 'error' as const } : scan
                 )
             );
-
+            
             setIsScanning(false);
-        }, 3000);
+        }
     };
 
     const selectRecentUrl = (recentUrl: string) => {

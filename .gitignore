@@ -5,3 +5,30 @@ dist/
 coverage/ 
 .DS_Store
 apps/web/next-env.d.ts
+
+# Scan results and generated files
+**/scan-*-results.json
+**/scan-*-results-summary.txt
+**/*-results.json
+**/*-results-summary.txt
+**/crawledFile.json
+
+# Test and example files
+**/test-*.json
+**/example-*.json
+**/sample-*.json
+**/audit-results*.json
+**/audit-results*.txt
+
+# Temporary documentation (keep only main docs)
+CLEAR_CACHE_INSTRUCTIONS.md
+DEBUG_STEPS.md
+INTEGRATION_SUMMARY.md
+ISSUE_DISPLAY_FIX.md
+ISSUE_DISPLAY_ROOT_CAUSE.md
+SETUP_CHECKLIST.md
+FILE_STRUCTURE.md
+PARALLEL_BATCH_IMPLEMENTATION.md
+SETUP_COMPLETE.md
+VISUAL_GUIDE.txt
+AUDIT_FAILURE_ANALYSIS.md
