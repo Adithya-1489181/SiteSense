@@ -171,15 +171,42 @@ async function formatSecurityResults(rawResults, originalInput) {
       scanTimestamp: new Date().toISOString()
     };
     
+    console.log(`📊 Formatting results from ${rawResults.length} scan(s)...`);
+    
     // Aggregate results from all scans
-    rawResults.forEach(result => {
+    rawResults.forEach((result, index) => {
+      console.log(`   Processing scan ${index + 1}: success=${result.success}, alerts type=${typeof result.alerts}`);
+      
       if (result.success && result.alerts) {
-        allAlerts.push(...result.alerts);
+        // Ensure alerts is an array before spreading
+        if (Array.isArray(result.alerts)) {
+          allAlerts.push(...result.alerts);
+          console.log(`   ✓ Added ${result.alerts.length} alerts from scan ${index + 1}`);
+        } else {
+          console.warn(`   ⚠️ alerts is not an array (type: ${typeof result.alerts}), attempting conversion`);
+          // Try to convert to array if it's an object with array-like structure
+          if (typeof result.alerts === 'object' && result.alerts !== null) {
+            const alertsArray = Object.values(result.alerts);
+            if (alertsArray.length > 0) {
+              allAlerts.push(...alertsArray);
+              console.log(`   ✓ Converted and added ${alertsArray.length} alerts from scan ${index + 1}`);
+            }
+          }
+        }
       }
+      
       if (result.discoveredUrls) {
-        allDiscoveredUrls.push(...result.discoveredUrls);
+        // Ensure discoveredUrls is an array before spreading
+        if (Array.isArray(result.discoveredUrls)) {
+          allDiscoveredUrls.push(...result.discoveredUrls);
+          console.log(`   ✓ Added ${result.discoveredUrls.length} discovered URLs from scan ${index + 1}`);
+        } else {
+          console.warn(`   ⚠️ discoveredUrls is not an array (type: ${typeof result.discoveredUrls})`);
+        }
       }
     });
+    
+    console.log(`📊 Total aggregated: ${allAlerts.length} alerts, ${allDiscoveredUrls.length} URLs`);
     
     // Process combined results
     const processedResults = processZAPResults({
